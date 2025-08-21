@@ -4,6 +4,7 @@ using CourseApi.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250821073717_addeedfk")]
+    partial class addeedfk
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,22 +37,17 @@ namespace CourseApi.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
                     b.Property<DateOnly>("StartDate")
                         .HasColumnType("date");
 
-                    b.Property<int>("TrainerId")
+                    b.Property<int>("TrainerD")
                         .HasColumnType("int");
 
                     b.HasKey("BatchId");
 
-                    b.HasIndex("CourseId");
+                    b.HasIndex("TrainerD");
 
-                    b.HasIndex("TrainerId");
-
-                    b.ToTable("Batches");
+                    b.ToTable("Batch");
                 });
 
             modelBuilder.Entity("CourseApi.Models.Course", b =>
@@ -133,26 +131,13 @@ namespace CourseApi.Migrations
 
             modelBuilder.Entity("CourseApi.Models.Batch", b =>
                 {
-                    b.HasOne("CourseApi.Models.Course", "Course")
-                        .WithMany("Batch")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("CourseApi.Models.Trainer", "Trainer")
                         .WithMany("Batches")
-                        .HasForeignKey("TrainerId")
+                        .HasForeignKey("TrainerD")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Course");
-
                     b.Navigation("Trainer");
-                });
-
-            modelBuilder.Entity("CourseApi.Models.Course", b =>
-                {
-                    b.Navigation("Batch");
                 });
 
             modelBuilder.Entity("CourseApi.Models.Trainer", b =>

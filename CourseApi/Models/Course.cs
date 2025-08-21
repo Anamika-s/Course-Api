@@ -11,5 +11,7 @@
         public int? ModifiedBy { get; set; }
         public DateTime? ModifiedOn { get; set; }
         public bool IsActive { get; set; }
+
+        public List<Batch>? Batch { get; set; }
     }
 }

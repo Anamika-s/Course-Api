@@ -13,12 +13,24 @@ namespace CourseApi
 
             builder.Services.AddControllers();
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
+
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.WithOrigins("*");
+                    builder.WithMethods("*");
+                    builder.AllowAnyHeader();
+                });
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
 
+            app.UseCors();
             app.UseHttpsRedirection();
 
+            //app.UseCors();
             app.UseAuthorization();
 
 

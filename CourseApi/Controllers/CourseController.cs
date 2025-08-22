@@ -42,6 +42,10 @@ namespace CourseApi.Controllers
         [Authorize(Policy = "RequireAdminRoleOnly")]
         public IActionResult Post(Course course)
         {
+            if (!User.IsInRole("Admin"))
+            {
+                return StatusCode(403);
+            }
             course.CreatedBy = 1;
             course.CreatedOn = DateTime.Now;
             course.IsActive = true;
@@ -57,6 +61,10 @@ namespace CourseApi.Controllers
         [Authorize(Policy = "RequireManagerAndAdmin")]
         public IActionResult Delete(int id)
         {
+            if (!User.IsInRole("Admin,Manager"))
+            {
+                return StatusCode(403);
+            }
             Course course = _context.Courses.FirstOrDefault(x => x.CourseId == id);
             if (course == null)
                 return NotFound();

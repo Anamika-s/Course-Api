@@ -49,10 +49,10 @@ namespace CourseApi
 
             // Configure the HTTP request pipeline.
 
-            app.UseCors();
+           
             app.UseHttpsRedirection();
 
-            //app.UseCors();
+            app.UseCors();
             app.UseAuthentication();
             app.UseAuthorization();
 

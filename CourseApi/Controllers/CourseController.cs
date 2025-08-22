@@ -1,5 +1,6 @@
 ﻿using CourseApi.Context;
 using CourseApi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace CourseApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class CourseController : ControllerBase
     {
         AppDbContext _context;
@@ -36,6 +38,8 @@ namespace CourseApi.Controllers
         }
 
         [HttpPost]
+        //[Authorize(Roles="Admin")]
+        [Authorize(Policy = "RequireAdminRoleOnly")]
         public IActionResult Post(Course course)
         {
             course.CreatedBy = 1;
@@ -48,6 +52,9 @@ namespace CourseApi.Controllers
         }
 
         [HttpDelete("{id}")]
+
+        //[Authorize(Roles ="Admin,Manager")]
+        [Authorize(Policy = "RequireManagerAndAdmin")]
         public IActionResult Delete(int id)
         {
             Course course = _context.Courses.FirstOrDefault(x => x.CourseId == id);

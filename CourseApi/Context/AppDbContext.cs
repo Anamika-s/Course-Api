@@ -9,7 +9,7 @@ namespace CourseApi.Context
         public DbSet<Trainer> Trainers { get; set; }
         public DbSet<Batch> Batches { get; set; }
         public DbSet<Role> Roles { get; set; }
-        public DbSet<User> Users { get; set; }
+        public DbSet<Models.UserViewModel> Users { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options) { }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -29,10 +29,10 @@ namespace CourseApi.Context
                 new Role() { RoleId = 3, RoleName = "User" }
                 );
 
-            modelBuilder.Entity<User>().HasData(
-                new User() { UserId = 1, UserName = "user1", Password = "admin", RoleId = 1 },
-                new User() { UserId = 2, UserName = "user2", Password = "manager", RoleId = 2 },
-                new User() { UserId = 3, UserName = "user3", Password = "user", RoleId = 3 }
+            modelBuilder.Entity<UserViewModel>().HasData(
+                new UserViewModel() { UserId = 1, UserName = "user1", Password = "admin", RoleId = 1 },
+                new UserViewModel() { UserId = 2, UserName = "user2", Password = "manager", RoleId = 2 },
+                new UserViewModel() { UserId = 3, UserName = "user3", Password = "user", RoleId = 3 }
                );
 
 

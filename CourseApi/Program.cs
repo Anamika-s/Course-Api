@@ -1,4 +1,6 @@
 using CourseApi.Context;
+using CourseApi.IRepo;
+using CourseApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -15,6 +17,12 @@ namespace CourseApi
             // Add services to the container.
 
             builder.Services.AddControllers();
+            // register the class on which controller is dependent on
+            // providing its lifetime
+            // AddScoped  > one instance will be there for one session
+            // AddSingleton >one instance for all requests , logging  
+            // AddTransient >> one instance for every request, transactions
+            builder.Services.AddScoped<ICourseRepo,CourseRepo>();
             builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>

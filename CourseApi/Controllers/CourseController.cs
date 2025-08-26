@@ -3,7 +3,7 @@ using CourseApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-
+using CourseApi.ViewModel;
 namespace CourseApi.Controllers
 {
     [Route("api/[controller]")]
@@ -93,5 +93,34 @@ namespace CourseApi.Controllers
             }
         }
 
-    }
+        [HttpGet]
+        [Route("/batchdetails")]
+        public IActionResult BatchDetails()
+        {
+             List<BatchViewModel>  batchdetailslist = 
+               
+                (from batch in _context.Batches
+                join course in _context.Courses
+                on batch.CourseId equals course.CourseId
+                join trainer in _context.Trainers
+                on batch.TrainerId equals trainer.TrainerCode
+                select new BatchViewModel()
+                {
+                    BatchCode = batch.BatchId,
+                    BatchName = batch.BatchName,
+                    CourseName = course.CourseName,
+                    CourseDuration = course.Duration,
+                    StartDate = batch.StartDate,
+                    TrainerName = trainer.TrainerName
+                }
+                ).ToList();
+            return Ok(batchdetailslist);
+            }
+
+
+        }
+
+
 }
+
+

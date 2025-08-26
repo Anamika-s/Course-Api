@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseApi.Models
 {
-    public class User
+    public class UserViewModel
     {
         public int UserId { get; set; }
         [Key]

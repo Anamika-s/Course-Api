@@ -23,10 +23,10 @@ namespace CourseApi.Controllers
             _configuration = configuration;
         }
         [HttpPost]
-        public IActionResult Login(UserViewModel user)
+        public IActionResult Login(Models.UserViewModel user)
         {
          IActionResult response = Unauthorized();
-         User obj = FindUser(user);
+            Models.UserViewModel obj = FindUser(user);
             if(obj!=null)
             {
                 var tokenString =  GenerateWebToken(obj);
@@ -46,7 +46,7 @@ namespace CourseApi.Controllers
 
         }
 
-        string GenerateWebToken(User user)
+        string GenerateWebToken(Models.UserViewModel user)
         {
             string role = GetRoleName(user.RoleId);
             var claims = new List<Claim>
@@ -89,7 +89,7 @@ namespace CourseApi.Controllers
                                 ).FirstOrDefault();
             return roleName;
         }
-        User  FindUser(User user)
+        Models.UserViewModel  FindUser(Models.UserViewModel user)
         {
             return _context.Users.FirstOrDefault(x=>x.UserName==user.UserName && x.Password==user.Password);    
         }

@@ -1,4 +1,4 @@
-﻿namespace CourseApi.UserViewModel
+﻿namespace CourseApi.ViewModel
 {
     public class UserViewModel
     {

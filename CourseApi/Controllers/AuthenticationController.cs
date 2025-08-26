@@ -23,7 +23,7 @@ namespace CourseApi.Controllers
             _configuration = configuration;
         }
         [HttpPost]
-        public IActionResult Login(User user)
+        public IActionResult Login(UserViewModel user)
         {
          IActionResult response = Unauthorized();
          User obj = FindUser(user);

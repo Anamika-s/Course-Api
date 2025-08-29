@@ -1,0 +1,35 @@
+version: '3.4'
+
+networks:
+  dummynetwork:
+
+services:
+  demodb:
+    container_name: sqldb
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+      - 8002:1433
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=pasword@123456!
+    networks:
+      - dummynetwork
+  
+  courseapi:
+    container_name: appwebapi 
+    image: ${DOCKER_REGISTRY-}courseapi
+    build:
+      context: .
+      dockerfile: CourseApi/Dockerfile
+    ports:
+      - 8001:80
+    depends_on: 
+      - demodb
+    environment:
+      - DB_HOST=demodb
+      - DB_NAME=DemoDB
+      - DB_SA_PASSWORD=pasword@123456!
+    networks:
+      - dummynetwork
+  
+

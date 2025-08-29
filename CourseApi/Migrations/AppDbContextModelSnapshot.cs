@@ -165,7 +165,7 @@ namespace CourseApi.Migrations
                     b.ToTable("Trainers");
                 });
 
-            modelBuilder.Entity("CourseApi.Models.User", b =>
+            modelBuilder.Entity("CourseApi.Models.UserViewModel", b =>
                 {
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(450)");
@@ -241,7 +241,7 @@ namespace CourseApi.Migrations
                     b.Navigation("Trainer");
                 });
 
-            modelBuilder.Entity("CourseApi.Models.User", b =>
+            modelBuilder.Entity("CourseApi.Models.UserViewModel", b =>
                 {
                     b.HasOne("CourseApi.Models.Role", "Role")
                         .WithMany("Users")

@@ -1,5 +1,7 @@
 ﻿using CourseApi.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace CourseApi.Context
 {
@@ -11,7 +13,32 @@ namespace CourseApi.Context
         public DbSet<Role> Roles { get; set; }
         public DbSet<Models.UserViewModel> Users { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options) { }
+            : base(options) {
+
+            //try
+            //{
+            //    var databaseCreator = Database.GetService<IDatabaseCreator>() as RelationalDatabaseCreator;
+            //    if (databaseCreator != null)
+            //    {
+            //        // Create the database if it doesn't exist
+            //        if (!databaseCreator.CanConnect())
+            //        {
+            //            databaseCreator.Create();
+            //        }
+
+            //        // Create tables if they don't exist
+            //        if (!databaseCreator.HasTables())
+            //        {
+            //            databaseCreator.CreateTables();
+            //        }
+            //    }
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Database creation failed: {ex.Message}");
+            //}
+
+        }
         //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         //{
         //    base.OnConfiguring(optionsBuilder);

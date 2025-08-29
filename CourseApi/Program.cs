@@ -4,6 +4,7 @@ using CourseApi.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Text;
 
 namespace CourseApi
@@ -22,8 +23,14 @@ namespace CourseApi
             // AddScoped  > one instance will be there for one session
             // AddSingleton >one instance for all requests , logging  
             // AddTransient >> one instance for every request, transactions
-            builder.Services.AddScoped<ICourseRepo,CourseRepo>();
-            builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
+            builder.Services.AddScoped<ICourseRepo, CourseRepo>();
+            //builder.Services.AddScoped<ICourseRepo, CourseRepoADO>();
+            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            var database = Environment.GetEnvironmentVariable("DB_NAME");
+            var password = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            var connectionString = $"server={dbHost};database={database};user id=sa;password={password};TrustServerCertificate=true";
+            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            //builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
       {
@@ -54,10 +61,18 @@ namespace CourseApi
                 });
             });
             var app = builder.Build();
+             // Configure the HTTP request pipeline.
 
-            // Configure the HTTP request pipeline.
+            using (var scope = app.Services.CreateScope())
+            {
+                var services = scope.ServiceProvider;
 
-           
+                var context = services.GetRequiredService<AppDbContext>();
+                if (context.Database.GetPendingMigrations().Any())
+                {
+                    context.Database.Migrate();
+                }
+            }
             app.UseHttpsRedirection();
 
             app.UseCors();

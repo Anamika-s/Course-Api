@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CourseApi.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250821074111_addedt")]
-    partial class addedt
+    [Migration("20250829080827_a")]
+    partial class a
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -94,6 +94,40 @@ namespace CourseApi.Migrations
                     b.ToTable("Courses");
                 });
 
+            modelBuilder.Entity("CourseApi.Models.Role", b =>
+                {
+                    b.Property<int>("RoleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RoleId"));
+
+                    b.Property<string>("RoleName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("RoleId");
+
+                    b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            RoleId = 1,
+                            RoleName = "Admin"
+                        },
+                        new
+                        {
+                            RoleId = 2,
+                            RoleName = "Manager"
+                        },
+                        new
+                        {
+                            RoleId = 3,
+                            RoleName = "User"
+                        });
+                });
+
             modelBuilder.Entity("CourseApi.Models.Trainer", b =>
                 {
                     b.Property<int>("TrainerCode")
@@ -134,6 +168,63 @@ namespace CourseApi.Migrations
                     b.ToTable("Trainers");
                 });
 
+            modelBuilder.Entity("CourseApi.Models.UserViewModel", b =>
+                {
+                    b.Property<string>("UserName")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MobileNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RoleId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserName");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            UserName = "user1",
+                            Password = "admin",
+                            RoleId = 1,
+                            UserId = 1
+                        },
+                        new
+                        {
+                            UserName = "user2",
+                            Password = "manager",
+                            RoleId = 2,
+                            UserId = 2
+                        },
+                        new
+                        {
+                            UserName = "user3",
+                            Password = "user",
+                            RoleId = 3,
+                            UserId = 3
+                        });
+                });
+
             modelBuilder.Entity("CourseApi.Models.Batch", b =>
                 {
                     b.HasOne("CourseApi.Models.Course", "Course")
@@ -153,9 +244,25 @@ namespace CourseApi.Migrations
                     b.Navigation("Trainer");
                 });
 
+            modelBuilder.Entity("CourseApi.Models.UserViewModel", b =>
+                {
+                    b.HasOne("CourseApi.Models.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("CourseApi.Models.Course", b =>
                 {
                     b.Navigation("Batch");
+                });
+
+            modelBuilder.Entity("CourseApi.Models.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("CourseApi.Models.Trainer", b =>

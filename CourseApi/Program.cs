@@ -25,11 +25,11 @@ namespace CourseApi
             // AddTransient >> one instance for every request, transactions
             builder.Services.AddScoped<ICourseRepo, CourseRepo>();
             //builder.Services.AddScoped<ICourseRepo, CourseRepoADO>();
-            var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
-            var database = Environment.GetEnvironmentVariable("DB_NAME");
-            var password = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
-            var connectionString = $"server={dbHost};database={database};user id=sa;password={password};TrustServerCertificate=true";
-            builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+            //var dbHost = Environment.GetEnvironmentVariable("DB_HOST");
+            //var database = Environment.GetEnvironmentVariable("DB_NAME");
+            //var password = Environment.GetEnvironmentVariable("DB_SA_PASSWORD");
+            //var connectionString = $"server={dbHost};database={database};user id=sa;password={password};TrustServerCertificate=true";
+            //builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
             //builder.Services.AddDbContext<AppDbContext>(x => x.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection")));
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(options =>
@@ -63,16 +63,16 @@ namespace CourseApi
             var app = builder.Build();
              // Configure the HTTP request pipeline.
 
-            using (var scope = app.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                var context = services.GetRequiredService<AppDbContext>();
-                if (context.Database.GetPendingMigrations().Any())
-                {
-                    context.Database.Migrate();
-                }
-            }
+            //    var context = services.GetRequiredService<AppDbContext>();
+            //    if (context.Database.GetPendingMigrations().Any())
+            //    {
+            //        context.Database.Migrate();
+            //    }
+            //}
             app.UseHttpsRedirection();
 
             app.UseCors();
